@@ -8,6 +8,7 @@ class Cards::TaggingsControllerTest < ActionDispatch::IntegrationTest
   test "new" do
     get new_card_tagging_path(cards(:logo))
     assert_response :success
+    assert_select "[data-navigable-list-tab-to-select-value='true']"
   end
 
   test "toggle tag on" do

@@ -8,6 +8,7 @@ class Cards::AssignmentsControllerTest < ActionDispatch::IntegrationTest
   test "new" do
     get new_card_assignment_path(cards(:logo))
     assert_response :success
+    assert_select "[data-navigable-list-tab-to-select-value='true']"
   end
 
   test "create" do

@@ -16,7 +16,8 @@ export default class extends Controller {
     preventHandledKeys: { type: Boolean, default: false },
     autoSelect: { type: Boolean, default: true },
     autoScroll: { type: Boolean, default: true },
-    onlyActOnFocusedItems: { type: Boolean, default: false }
+    onlyActOnFocusedItems: { type: Boolean, default: false },
+    tabToSelect: { type: Boolean, default: false }
   }
 
   // Don't load for mobile devices
@@ -206,6 +207,32 @@ export default class extends Controller {
     }
   }
 
+  #clickCurrentItemKeepingOpen(event) {
+    if (this.actionableItemsValue && this.currentItem && this.#visibleItems.length && this.#isFocusContainedOnNavigableItem) {
+      const item = this.currentItem
+      const clickableElement = item.querySelector("a,button") || item
+      const form = clickableElement.closest("form")
+      const checkedState = item.getAttribute("aria-checked")
+
+      if (form) {
+        form.addEventListener("turbo:submit-end", (event) => {
+          event.stopPropagation()
+
+          if (!event.detail?.success && checkedState !== null) {
+            item.setAttribute("aria-checked", checkedState)
+          }
+        }, { once: true })
+      }
+
+      if (checkedState !== null) {
+        item.setAttribute("aria-checked", checkedState === "true" ? "false" : "true")
+      }
+
+      clickableElement.click()
+      event.preventDefault()
+    }
+  }
+
   get #isFocusContainedOnNavigableItem() {
     return !this.onlyActOnFocusedItemsValue || this.itemTargets.some(item => item === document.activeElement || item.contains(document.activeElement))
   }
@@ -213,9 +240,8 @@ export default class extends Controller {
   #toggleCurrentItem(event) {
     if (this.actionableItemsValue && this.currentItem && this.#visibleItems.length) {
       const toggleable = this.currentItem.querySelector("input[type=checkbox]")
-      const isDisabled = toggleable.hasAttribute("disabled")
-
       if (toggleable) {
+        const isDisabled = toggleable.hasAttribute("disabled")
         if (!isDisabled) {
           toggleable.checked = !toggleable.checked
           toggleable.dispatchEvent(new Event('change', { bubbles: true }))
@@ -277,6 +303,10 @@ export default class extends Controller {
       } else {
         this.#clickCurrentItem(event)
       }
+    },
+    Tab(event) {
+      if (event.isComposing || !this.tabToSelectValue || event.shiftKey || event.altKey || event.metaKey || event.ctrlKey) { return }
+      this.#clickCurrentItemKeepingOpen(event)
     }
   }
 }
