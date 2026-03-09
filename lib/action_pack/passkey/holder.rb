@@ -1,4 +1,4 @@
-module ActionPack::WebAuthn::Holder
+module ActionPack::Passkey::Holder
   extend ActiveSupport::Concern
 
   class_methods do
@@ -9,7 +9,7 @@ module ActionPack::WebAuthn::Holder
       has_many config.association_name,
         as: :holder,
         dependent: config.dependent,
-        class_name: "ActionPack::WebAuthn::Passkey"
+        class_name: "ActionPack::Passkey"
 
       define_method(:passkey_creation_options) do
         {

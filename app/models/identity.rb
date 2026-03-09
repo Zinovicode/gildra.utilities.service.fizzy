@@ -1,5 +1,5 @@
 class Identity < ApplicationRecord
-  include ActionPack::WebAuthn::Holder
+  include ActionPack::Passkey::Holder
   include Joinable, Transferable
 
   has_passkeys do |config|

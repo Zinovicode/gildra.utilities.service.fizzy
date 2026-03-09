@@ -1,4 +1,4 @@
-class ActionPack::WebAuthn::Passkey < ApplicationRecord
+class ActionPack::Passkey < ApplicationRecord
   self.table_name = "passkeys"
 
   belongs_to :holder, polymorphic: true
