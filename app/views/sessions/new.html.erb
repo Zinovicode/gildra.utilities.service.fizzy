@@ -1,9 +1,10 @@
 <% @page_title = "Enter your email" %>
 
-<div class="panel panel--centered flex flex-column gap-half" data-controller="passkey"
-    data-passkey-public-key-value="<%= @request_options.to_json %>"
-    data-passkey-url-value="<%= session_passkey_path %>"
-    data-passkey-csrf-token-value="<%= form_authenticity_token %>">
+<% content_for :head do %>
+  <%= passkey_request_options_meta_tag(@request_options) %>
+<% end %>
+
+<div class="panel panel--centered flex flex-column gap-half">
   <h1 class="txt-x-large font-weight-black margin-block-end">Get into Fizzy</h1>
 
   <%= form_with url: session_path, class: "flex flex-column gap-half txt-medium" do |form| %>
@@ -24,6 +25,8 @@
       <%= icon_tag "arrow-right" %>
     </button>
   <% end %>
+
+  <%= sign_in_with_passkey_button session_passkey_path, mediation: "conditional", class: "btn btn--link center txt-medium", hidden: true %>
 
 </div>
 

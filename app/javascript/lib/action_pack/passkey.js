@@ -1,5 +1,6 @@
-import { register } from "lib/action_pack/webauthn"
+import { register, authenticate } from "lib/action_pack/webauthn"
 
+// Create passkey (explicit button click)
 document.addEventListener("click", async (event) => {
   const button = event.target.closest('[data-passkey="create"]')
   if (!button) return
@@ -11,20 +12,10 @@ document.addEventListener("click", async (event) => {
 
   try {
     const meta = document.querySelector('meta[name="passkey-creation-options"]')
-    const publicKey = JSON.parse(meta.content)
-    const passkey = await register(publicKey)
+    const creationOptions = JSON.parse(meta.content)
+    const passkey = await register(creationOptions)
 
-    form.querySelector('[data-passkey-field="client_data_json"]').value = passkey.client_data_json
-    form.querySelector('[data-passkey-field="attestation_object"]').value = passkey.attestation_object
-
-    const template = form.querySelector('[data-passkey-field="transports"]')
-    for (const transport of passkey.transports) {
-      const input = template.cloneNode()
-      input.value = transport
-      template.before(input)
-    }
-    template.remove()
-
+    fillCreateForm(form, passkey)
     form.submit()
   } catch (error) {
     button.disabled = false
@@ -33,3 +24,71 @@ document.addEventListener("click", async (event) => {
     button.dispatchEvent(new CustomEvent("passkey:error", { bubbles: true, detail: { error, cancelled } }))
   }
 })
+
+// Sign in with passkey (explicit button click)
+document.addEventListener("click", async (event) => {
+  const button = event.target.closest('[data-passkey="sign_in"]')
+  if (!button) return
+
+  const form = button.closest("form")
+  if (!form) return
+
+  button.disabled = true
+
+  try {
+    const meta = document.querySelector('meta[name="passkey-request-options"]')
+    const requestOptions = JSON.parse(meta.content)
+    const passkey = await authenticate(requestOptions)
+
+    fillSignInForm(form, passkey)
+    form.submit()
+  } catch (error) {
+    button.disabled = false
+
+    const cancelled = error.name === "AbortError" || error.name === "NotAllowedError"
+    button.dispatchEvent(new CustomEvent("passkey:error", { bubbles: true, detail: { error, cancelled } }))
+  }
+})
+
+// Sign in with passkey (conditional mediation / autofill UI)
+document.addEventListener("DOMContentLoaded", async () => {
+  const form = document.querySelector('form[data-passkey-mediation="conditional"]')
+  if (!form) return
+  if (!await window.PublicKeyCredential?.isConditionalMediationAvailable?.()) return
+
+  const meta = document.querySelector('meta[name="passkey-request-options"]')
+  if (!meta) return
+
+  const publicKey = JSON.parse(meta.content)
+
+  try {
+    const passkey = await authenticate(publicKey, { mediation: "conditional" })
+
+    fillSignInForm(form, passkey)
+    form.submit()
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      console.error("Passkey error:", error)
+    }
+  }
+})
+
+function fillCreateForm(form, passkey) {
+  form.querySelector('[data-passkey-field="client_data_json"]').value = passkey.client_data_json
+  form.querySelector('[data-passkey-field="attestation_object"]').value = passkey.attestation_object
+
+  const template = form.querySelector('[data-passkey-field="transports"]')
+  for (const transport of passkey.transports) {
+    const input = template.cloneNode()
+    input.value = transport
+    template.before(input)
+  }
+  template.remove()
+}
+
+function fillSignInForm(form, passkey) {
+  form.querySelector('[data-passkey-field="id"]').value = passkey.id
+  form.querySelector('[data-passkey-field="client_data_json"]').value = passkey.client_data_json
+  form.querySelector('[data-passkey-field="authenticator_data"]').value = passkey.authenticator_data
+  form.querySelector('[data-passkey-field="signature"]').value = passkey.signature
+}
