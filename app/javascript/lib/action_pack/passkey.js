@@ -12,7 +12,11 @@ document.addEventListener("click", async (event) => {
   button.dispatchEvent(new CustomEvent("passkey:start", { bubbles: true }))
 
   try {
+    if (!window.PublicKeyCredential) throw new Error("Passkeys are not supported by this browser")
+
     const meta = document.querySelector('meta[name="passkey-creation-options"]')
+    if (!meta) throw new Error("Missing passkey creation options")
+
     const creationOptions = JSON.parse(meta.content)
     const passkey = await register(creationOptions)
 
@@ -39,7 +43,11 @@ document.addEventListener("click", async (event) => {
   button.dispatchEvent(new CustomEvent("passkey:start", { bubbles: true }))
 
   try {
+    if (!window.PublicKeyCredential) throw new Error("Passkeys are not supported by this browser")
+
     const meta = document.querySelector('meta[name="passkey-request-options"]')
+    if (!meta) throw new Error("Missing passkey request options")
+
     const requestOptions = JSON.parse(meta.content)
     const passkey = await authenticate(requestOptions)
 
