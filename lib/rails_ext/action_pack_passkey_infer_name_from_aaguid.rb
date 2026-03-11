@@ -1,4 +1,4 @@
-module ActionPackWebAuthnInferPasskeyName
+module ActionPackPasskeyInferNameFromAaguid
   extend ActiveSupport::Concern
 
   class_methods do

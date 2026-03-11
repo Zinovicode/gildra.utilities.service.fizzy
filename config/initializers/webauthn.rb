@@ -1,3 +1,3 @@
 Rails.application.config.to_prepare do
-  ActionPack::Passkey.prepend ActionPackWebAuthnInferPasskeyName
+  ActionPack::Passkey.prepend ActionPackPasskeyInferNameFromAaguid
 end
