@@ -5,7 +5,7 @@
 #   class User < ApplicationRecord
 #     include ActionPack::Passkey::Holder
 #
-#     has_passkeys
+#     has_passkeys name: :email_address, display_name: :name
 #   end
 #
 # This sets up a polymorphic +has_many :passkeys+ association and defines two methods on the
@@ -96,13 +96,21 @@ module ActionPack::Passkey::Holder
     # Evaluates the request options block (if any) in the context of the given +record+. Called
     # internally by the +passkey_request_options+ method defined on the holder.
     def evaluate_request_options(record)
-      record.instance_exec(&@request_options) if @request_options
+      if @request_options
+        record.instance_exec(&@request_options)
+      else
+        {}
+      end
     end
 
     # Evaluates the creation options block (if any) in the context of the given +record+. Called
     # internally by the +passkey_creation_options+ method defined on the holder.
     def evaluate_creation_options(record)
-      record.instance_exec(&@creation_options) if @creation_options
+      if @creation_options
+        record.instance_exec(&@creation_options)
+      else
+        {}
+      end
     end
 
     private

@@ -3,6 +3,7 @@ module ActionPack::WebAuthn
   class InvalidCborError < StandardError; end
   class InvalidKeyError < StandardError; end
   class UnsupportedKeyTypeError < StandardError; end
+  class InvalidOptionsError < StandardError; end
 
   class << self
     def relying_party

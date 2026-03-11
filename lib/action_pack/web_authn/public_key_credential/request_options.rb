@@ -24,21 +24,12 @@
 #   The relying party (your application) configuration. Defaults to
 #   +ActionPack::WebAuthn.relying_party+.
 class ActionPack::WebAuthn::PublicKeyCredential::RequestOptions < ActionPack::WebAuthn::PublicKeyCredential::Options
-  attr_reader :credentials
+  attr_accessor :credentials
 
-  # Creates a new set of credential request options.
-  #
-  # ==== Options
-  #
-  # [+:credentials+]
-  #   Required. The user's registered WebAuthn credentials.
-  #
-  # [+:relying_party+]
-  #   Optional. The relying party configuration.
-  def initialize(credentials: [], **attrs)
-    super(**attrs)
-
-    @credentials = credentials
+  def initialize(attributes = {})
+    super
+    @credentials ||= []
+    validate!
   end
 
   # Returns a Hash suitable for JSON serialization and passing to the

@@ -102,7 +102,7 @@ class ActionPack::WebAuthn::PublicKeyCredential::CreationOptionsTest < ActiveSup
   end
 
   test "raises with invalid attestation preference" do
-    assert_raises(ArgumentError) do
+    assert_raises(ActionPack::WebAuthn::InvalidOptionsError) do
       ActionPack::WebAuthn::PublicKeyCredential::CreationOptions.new(
         id: "user-123",
         name: "user@example.com",

@@ -1,16 +1,23 @@
 class ActionPack::WebAuthn::PublicKeyCredential::Options
+  include ActiveModel::API
+
   CHALLENGE_LENGTH = 32
-  USER_VERIFICATION_OPTIONS = [ :required, :preferred, :discouraged ].freeze
+  USER_VERIFICATION_OPTIONS = %i[ required preferred discouraged ].freeze
 
-  attr_reader :user_verification, :relying_party
+  attr_accessor :user_verification, :relying_party
 
-  def initialize(user_verification: :preferred, relying_party: ActionPack::WebAuthn.relying_party)
-    @user_verification = user_verification.to_sym
-    @relying_party = relying_party
+  validates :user_verification, inclusion: { in: USER_VERIFICATION_OPTIONS }
 
-    unless USER_VERIFICATION_OPTIONS.include?(@user_verification)
-      raise ArgumentError, "Invalid user verification option: #{user_verification.inspect}"
-    end
+  def initialize(attributes = {})
+    super
+    @user_verification = (@user_verification || :preferred).to_sym
+    @relying_party ||= ActionPack::WebAuthn.relying_party
+  end
+
+  def validate!
+    super
+  rescue ActiveModel::ValidationError
+    raise ActionPack::WebAuthn::InvalidOptionsError, errors.full_messages.to_sentence
   end
 
   # Returns a Base64URL-encoded random challenge. The challenge is generated

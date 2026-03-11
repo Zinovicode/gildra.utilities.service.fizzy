@@ -43,45 +43,21 @@ class ActionPack::WebAuthn::PublicKeyCredential::CreationOptions < ActionPack::W
   ES256 = { type: "public-key", alg: -7 }.freeze
   EDDSA = { type: "public-key", alg: -8 }.freeze
   RS256 = { type: "public-key", alg: -257 }.freeze
+  RESIDENT_KEY_OPTIONS = %i[ preferred required discouraged ].freeze
+  ATTESTATION_PREFERENCES = %i[ none indirect direct enterprise ].freeze
 
-  attr_reader :id, :name, :display_name
+  attr_accessor :id, :name, :display_name, :resident_key, :exclude_credentials, :attestation
 
-  # Creates a new set of credential creation options.
-  #
-  # ==== Options
-  #
-  # [+:id+]
-  #   Required. The user's unique identifier.
-  #
-  # [+:name+]
-  #   Required. The user's account name (e.g., email).
-  #
-  # [+:display_name+]
-  #   Required. The user's display name.
-  #
-  # [+:relying_party+]
-  #   Optional. The relying party configuration.
-  #
-  # [+:resident_key+]
-  #   Optional. Resident key requirement. One of +:preferred+, +:required+,
-  #   or +:discouraged+. Defaults to +:preferred+.
-  #
-  # [+:exclude_credentials+]
-  #   Optional. Existing credentials to exclude from registration. Each must
-  #   respond to +id+ and +transports+.
-  #
-  # [+:attestation+]
-  #   Optional. The attestation conveyance preference. One of +:none+,
-  #   +:indirect+, +:direct+, or +:enterprise+. Defaults to +:none+.
-  def initialize(id:, name:, display_name:, resident_key: :preferred, exclude_credentials: [], attestation: :none, **attrs)
-    super(**attrs)
+  validates :id, :name, :display_name, presence: true
+  validates :resident_key, inclusion: { in: RESIDENT_KEY_OPTIONS }
+  validates :attestation, inclusion: { in: ATTESTATION_PREFERENCES }
 
-    @id = id
-    @name = name
-    @display_name = display_name
-    @resident_key = validate_resident_key(resident_key)
-    @exclude_credentials = exclude_credentials
-    @attestation = validate_attestation(attestation)
+  def initialize(attributes = {})
+    super
+    @resident_key = (@resident_key || :preferred).to_sym
+    @exclude_credentials ||= []
+    @attestation = (@attestation || :none).to_sym
+    validate!
   end
 
   # Returns a Hash suitable for JSON serialization and passing to the
@@ -101,43 +77,24 @@ class ActionPack::WebAuthn::PublicKeyCredential::CreationOptions < ActionPack::W
         RS256
       ],
       authenticatorSelection: {
-        residentKey: @resident_key.to_s,
-        requireResidentKey: @resident_key == :required,
+        residentKey: resident_key.to_s,
+        requireResidentKey: resident_key == :required,
         userVerification: user_verification.to_s
       }
     }
 
-    if @exclude_credentials.any?
-      json[:excludeCredentials] = @exclude_credentials.map { |credential| exclude_credential_json(credential) }
+    if exclude_credentials.any?
+      json[:excludeCredentials] = exclude_credentials.map { |credential| exclude_credential_json(credential) }
     end
 
-    if @attestation != :none
-      json[:attestation] = @attestation.to_s
+    if attestation != :none
+      json[:attestation] = attestation.to_s
     end
 
     json
   end
 
   private
-    RESIDENT_KEY_OPTIONS = %i[ preferred required discouraged ].freeze
-    ATTESTATION_PREFERENCES = %i[ none indirect direct enterprise ].freeze
-
-    def validate_resident_key(value)
-      if RESIDENT_KEY_OPTIONS.include?(value)
-        value
-      else
-        raise ArgumentError, "Invalid resident key option: #{value.inspect}. Must be one of: #{RESIDENT_KEY_OPTIONS.map(&:inspect).join(", ")}"
-      end
-    end
-
-    def validate_attestation(value)
-      if ATTESTATION_PREFERENCES.include?(value)
-        value
-      else
-        raise ArgumentError, "Invalid attestation preference: #{value.inspect}. Must be one of: #{ATTESTATION_PREFERENCES.map(&:inspect).join(", ")}"
-      end
-    end
-
     def exclude_credential_json(credential)
       hash = { type: "public-key", id: credential.id }
       hash[:transports] = credential.transports if credential.transports.any?
