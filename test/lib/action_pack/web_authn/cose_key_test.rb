@@ -175,6 +175,21 @@ class ActionPack::WebAuthn::CoseKeyTest < ActiveSupport::TestCase
     assert_match(/missing ec2 key coordinates/i, error.message)
   end
 
+  test "raises error for EC2 key with wrong coordinate length" do
+    parameters = @ec2_parameters.merge(-2 => "\x00" * 16) # 16 bytes instead of 32
+    key = ActionPack::WebAuthn::CoseKey.new(
+      key_type: 2,
+      algorithm: -7,
+      parameters: parameters
+    )
+
+    error = assert_raises(ActionPack::WebAuthn::InvalidKeyError) do
+      key.to_openssl_key
+    end
+
+    assert_match(/invalid ec2 coordinate length/i, error.message)
+  end
+
   test "raises error for OKP key with missing coordinate" do
     parameters = @okp_parameters.except(-2) # missing x coordinate
     key = ActionPack::WebAuthn::CoseKey.new(

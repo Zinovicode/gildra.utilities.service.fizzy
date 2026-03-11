@@ -95,12 +95,20 @@ class ActionPack::WebAuthn::Authenticator::Data
       public_key_bytes = nil
 
       if flags & ATTESTED_CREDENTIAL_DATA_FLAG != 0
+        if bytes.length < position + AAGUID_LENGTH + CREDENTIAL_ID_LENGTH_BYTES
+          raise ActionPack::WebAuthn::InvalidAuthenticationResponseError, "Authenticator data is too short for attested credential data"
+        end
+
         aaguid_bytes = bytes[position, AAGUID_LENGTH].pack("C*")
         aaguid = aaguid_bytes.unpack("H8H4H4H4H12").join("-")
         position += AAGUID_LENGTH
 
         credential_id_length = bytes[position, CREDENTIAL_ID_LENGTH_BYTES].pack("C*").unpack1("n")
         position += CREDENTIAL_ID_LENGTH_BYTES
+
+        if bytes.length < position + credential_id_length + 1
+          raise ActionPack::WebAuthn::InvalidAuthenticationResponseError, "Authenticator data is too short for credential ID and public key"
+        end
 
         credential_id = Base64.urlsafe_encode64(bytes[position, credential_id_length].pack("C*"), padding: false)
         position += credential_id_length

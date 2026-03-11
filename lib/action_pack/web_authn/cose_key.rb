@@ -36,6 +36,7 @@
 # [+parameters+]
 #   The full COSE key parameters map, including curve and coordinate data.
 class ActionPack::WebAuthn::CoseKey
+  P256_COORDINATE_LENGTH = 32
   MINIMUM_RSA_KEY_BITS = 2048
 
   # COSE key labels
@@ -116,6 +117,7 @@ class ActionPack::WebAuthn::CoseKey
       x = parameters[EC2_X_LABEL]
       y = parameters[EC2_Y_LABEL]
       raise ActionPack::WebAuthn::InvalidKeyError, "Missing EC2 key coordinates" if x.nil? || y.nil?
+      raise ActionPack::WebAuthn::InvalidKeyError, "Invalid EC2 coordinate length" unless x.bytesize == P256_COORDINATE_LENGTH && y.bytesize == P256_COORDINATE_LENGTH
 
       # Uncompressed point format: 0x04 || x || y
       public_key_bytes = [ UNCOMPRESSED_POINT_MARKER, *x.bytes, *y.bytes ].pack("C*")

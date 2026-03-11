@@ -99,6 +99,43 @@ class ActionPack::WebAuthn::Authenticator::DataTest < ActiveSupport::TestCase
     assert_nil data.public_key
   end
 
+  test "raises when attested credential flag set but data truncated before AAGUID" do
+    flags = 0x41
+    bytes = build_authenticator_data(flags: flags, include_credential: false)
+
+    assert_raises(ActionPack::WebAuthn::InvalidAuthenticationResponseError) do
+      ActionPack::WebAuthn::Authenticator::Data.decode(bytes)
+    end
+  end
+
+  test "raises when attested credential flag set but data truncated before credential ID" do
+    flags = 0x41
+    # Header + AAGUID only, missing credential ID length and beyond
+    bytes = []
+    bytes.concat(@rp_id_hash.bytes)
+    bytes << flags
+    bytes.concat([ 0 ].pack("N").bytes)
+    bytes.concat(@aaguid.bytes)
+
+    assert_raises(ActionPack::WebAuthn::InvalidAuthenticationResponseError) do
+      ActionPack::WebAuthn::Authenticator::Data.decode(bytes.pack("C*"))
+    end
+  end
+
+  test "raises when credential ID length exceeds remaining bytes" do
+    flags = 0x41
+    bytes = []
+    bytes.concat(@rp_id_hash.bytes)
+    bytes << flags
+    bytes.concat([ 0 ].pack("N").bytes)
+    bytes.concat(@aaguid.bytes)
+    bytes.concat([ 9999 ].pack("n").bytes) # credential ID length far exceeding remaining data
+
+    assert_raises(ActionPack::WebAuthn::InvalidAuthenticationResponseError) do
+      ActionPack::WebAuthn::Authenticator::Data.decode(bytes.pack("C*"))
+    end
+  end
+
   private
     def build_authenticator_data(flags:, include_credential:)
       bytes = []
