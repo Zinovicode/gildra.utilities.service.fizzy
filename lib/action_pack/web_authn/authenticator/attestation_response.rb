@@ -8,13 +8,12 @@
 #
 #   response = ActionPack::WebAuthn::Authenticator::AttestationResponse.new(
 #     client_data_json: params[:response][:clientDataJSON],
-#     attestation_object: params[:response][:attestationObject]
-#   )
-#
-#   response.validate!(
+#     attestation_object: params[:response][:attestationObject],
 #     challenge: session[:registration_challenge],
 #     origin: "https://example.com"
 #   )
+#
+#   response.validate!
 #
 #   # Store the credential
 #   credential_id = response.attestation.credential_id
