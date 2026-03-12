@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2026_03_04_131850) do
+ActiveRecord::Schema[8.2].define(version: 2026_03_12_065104) do
   create_table "accesses", id: :uuid, force: :cascade do |t|
     t.datetime "accessed_at"
     t.uuid "account_id", null: false
@@ -67,6 +67,22 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_04_131850) do
     t.string "name", limit: 255, null: false
     t.datetime "updated_at", null: false
     t.index ["external_account_id"], name: "index_accounts_on_external_account_id", unique: true
+  end
+
+  create_table "action_pack_passkeys", id: :uuid, force: :cascade do |t|
+    t.string "aaguid", limit: 255
+    t.boolean "backed_up"
+    t.datetime "created_at", null: false
+    t.string "credential_id", limit: 255, null: false
+    t.uuid "holder_id", null: false
+    t.string "holder_type", limit: 255, null: false
+    t.string "name", limit: 255
+    t.binary "public_key", null: false
+    t.integer "sign_count", default: 0, null: false
+    t.text "transports", limit: 65535
+    t.datetime "updated_at", null: false
+    t.index ["credential_id"], name: "index_action_pack_passkeys_on_credential_id", unique: true
+    t.index ["holder_type", "holder_id"], name: "index_action_pack_passkeys_on_holder_type_and_holder_id"
   end
 
   create_table "action_text_rich_texts", id: :uuid, force: :cascade do |t|
@@ -401,22 +417,6 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_04_131850) do
     t.index ["user_id", "card_id"], name: "index_notifications_on_user_id_and_card_id", unique: true
     t.index ["user_id", "read_at", "updated_at"], name: "index_notifications_on_user_id_and_read_at_and_updated_at", order: { read_at: :desc, updated_at: :desc }
     t.index ["user_id"], name: "index_notifications_on_user_id"
-  end
-
-  create_table "passkeys", id: :uuid, force: :cascade do |t|
-    t.string "aaguid"
-    t.boolean "backed_up"
-    t.datetime "created_at", null: false
-    t.string "credential_id", null: false
-    t.uuid "holder_id", null: false
-    t.string "holder_type", null: false
-    t.string "name"
-    t.binary "public_key", null: false
-    t.integer "sign_count", default: 0, null: false
-    t.text "transports"
-    t.datetime "updated_at", null: false
-    t.index ["credential_id"], name: "index_passkeys_on_credential_id", unique: true
-    t.index ["holder_type", "holder_id"], name: "index_passkeys_on_holder_type_and_holder_id"
   end
 
   create_table "pins", id: :uuid, force: :cascade do |t|

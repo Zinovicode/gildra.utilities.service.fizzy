@@ -36,8 +36,7 @@
 # association and configure ceremony options per-holder. See ActionPack::Passkey::Holder for
 # details.
 class ActionPack::Passkey < ApplicationRecord
-  self.table_name = "passkeys"
-
+  self.table_name = "action_pack_passkeys"
   belongs_to :holder, polymorphic: true
   serialize :transports, coder: JSON, type: Array, default: []
 
