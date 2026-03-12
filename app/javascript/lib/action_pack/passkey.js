@@ -76,15 +76,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const publicKey = JSON.parse(meta.content)
   await refreshChallenge(publicKey)
 
+  form.dispatchEvent(new CustomEvent("passkey:start", { bubbles: true }))
+
   try {
     const passkey = await authenticate(publicKey, { mediation: "conditional" })
 
+    form.dispatchEvent(new CustomEvent("passkey:success", { bubbles: true }))
     fillSignInForm(form, passkey)
     form.submit()
   } catch (error) {
-    if (error.name !== "AbortError") {
-      console.error("Passkey error:", error)
-    }
+    const cancelled = error.name === "AbortError" || error.name === "NotAllowedError"
+    form.dispatchEvent(new CustomEvent("passkey:error", { bubbles: true, detail: { error, cancelled } }))
   }
 })
 
