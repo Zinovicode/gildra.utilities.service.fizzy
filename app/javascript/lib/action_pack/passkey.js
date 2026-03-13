@@ -212,12 +212,13 @@ function fillSignInForm(form, passkey) {
 async function attemptConditionalMediation() {
   if (await conditionalMediationAvailable()) {
     const form = document.querySelector('form[data-passkey-mediation="conditional"]')
-    const requestOptions = getRequestOptions()
-    await refreshChallenge(requestOptions)
-
     form.dispatchEvent(new CustomEvent("passkey:start", { bubbles: true }))
 
+    const requestOptions = getRequestOptions()
+
     try {
+      await refreshChallenge(requestOptions)
+
       const passkey = await authenticate(requestOptions, { mediation: "conditional" })
 
       form.dispatchEvent(new CustomEvent("passkey:success", { bubbles: true }))
