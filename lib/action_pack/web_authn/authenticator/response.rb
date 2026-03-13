@@ -58,10 +58,13 @@ class ActionPack::WebAuthn::Authenticator::Response
     raise ActionPack::WebAuthn::InvalidResponseError, errors.full_messages.join(", ")
   end
 
+  # Returns the RelyingParty used for RP ID validation.
   def relying_party
     ActionPack::WebAuthn.relying_party
   end
 
+  # Parses the client data JSON string into a Hash. Raises
+  # +InvalidResponseError+ if the JSON is malformed.
   def client_data
     @client_data ||= JSON.parse(client_data_json)
   rescue JSON::ParserError

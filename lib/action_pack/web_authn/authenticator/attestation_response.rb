@@ -38,10 +38,13 @@ class ActionPack::WebAuthn::Authenticator::AttestationResponse < ActionPack::Web
     @attestation_object = attestation_object
   end
 
+  # Returns the decoded Attestation object, lazily parsed from the raw
+  # attestation object bytes.
   def attestation
     @attestation ||= ActionPack::WebAuthn::Authenticator::Attestation.wrap(attestation_object)
   end
 
+  # Returns the authenticator data extracted from the attestation object.
   def authenticator_data
     attestation.authenticator_data
   end

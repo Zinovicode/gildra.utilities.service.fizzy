@@ -60,6 +60,8 @@ class ActionPack::WebAuthn::Authenticator::Data
   attr_reader :bytes, :relying_party_id_hash, :flags, :sign_count, :aaguid, :credential_id, :public_key_bytes
 
   class << self
+    # Wraps raw authenticator data into a Data instance. Accepts an existing
+    # Data object (returned as-is), a Base64URL-encoded string, or raw binary.
     def wrap(data)
       if data.is_a?(self)
         data
@@ -71,6 +73,8 @@ class ActionPack::WebAuthn::Authenticator::Data
       raise ActionPack::WebAuthn::InvalidResponseError, "Invalid base64 encoding in authenticator data"
     end
 
+    # Decodes raw authenticator data bytes into a Data instance, parsing the
+    # RP ID hash, flags, sign count, and (if present) attested credential data.
     def decode(bytes)
       bytes = bytes.bytes if bytes.is_a?(String)
 
@@ -138,10 +142,13 @@ class ActionPack::WebAuthn::Authenticator::Data
     @public_key_bytes = public_key_bytes
   end
 
+  # Returns true if the user performed a test of presence (e.g., touched the
+  # authenticator).
   def user_present?
     flags & USER_PRESENT_FLAG != 0
   end
 
+  # Returns true if the user was verified via biometrics, PIN, or similar.
   def user_verified?
     flags & USER_VERIFIED_FLAG != 0
   end
@@ -158,6 +165,9 @@ class ActionPack::WebAuthn::Authenticator::Data
     flags & BACKUP_STATE_FLAG != 0
   end
 
+  # Decodes the COSE public key bytes into an OpenSSL key object.
+  # Returns +nil+ when no attested credential data is present (authentication
+  # responses).
   def public_key
     @public_key ||= ActionPack::WebAuthn::CoseKey.decode(public_key_bytes).to_openssl_key if public_key_bytes
   end

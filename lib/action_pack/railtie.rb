@@ -1,5 +1,22 @@
 require_relative "web_authn"
 
+# = Action Pack Railtie
+#
+# Integrates the WebAuthn and Passkey subsystems into the Rails application.
+# Configures default options for WebAuthn ceremonies and sets up the passkey
+# challenge endpoint route.
+#
+# == Configuration
+#
+#   # config/application.rb or config/initializers/passkeys.rb
+#   config.action_pack.web_authn.default_creation_options = { attestation: :none }
+#   config.action_pack.web_authn.default_request_options  = { user_verification: :required }
+#   config.action_pack.web_authn.creation_challenge_expiration = 10.minutes
+#   config.action_pack.web_authn.request_challenge_expiration = 5.minutes
+#
+#   config.action_pack.passkey.routes_prefix = "/rails/action_pack/passkey"
+#   config.action_pack.passkey.draw_routes   = true
+#
 class ActionPack::Railtie < Rails::Railtie
   config.action_pack = ActiveSupport::OrderedOptions.new unless config.respond_to?(:action_pack)
 
