@@ -26,6 +26,9 @@ module Fizzy
       g.orm :active_record, primary_key_type: :uuid
     end
 
+    config.action_pack.passkey.draw_routes = false
+    config.action_pack.passkey.challenge_url = -> { my_passkey_challenge_path(script_name: "") }
+
     config.mission_control.jobs.http_basic_auth_enabled = false
   end
 end

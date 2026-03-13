@@ -21,7 +21,7 @@ module WebauthnTestHelper
 
   private
     def request_webauthn_challenge
-      untenanted { post passkey_challenge_url }
+      untenanted { post my_passkey_challenge_url }
       response.parsed_body["challenge"]
     end
 

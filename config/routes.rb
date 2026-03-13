@@ -172,6 +172,7 @@ Rails.application.routes.draw do
   resource :landing
 
   namespace :my do
+    resource :passkey_challenge, only: :create
     resource :identity, only: :show
     resources :access_tokens
     resources :passkeys, except: %i[ show new ]

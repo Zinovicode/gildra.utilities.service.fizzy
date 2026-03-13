@@ -11,16 +11,16 @@ module ActionPack::Passkey::FormHelper
   # Renders +<meta>+ tags containing JSON-serialized creation options and the challenge endpoint
   # URL for the WebAuthn registration ceremony. The companion JavaScript reads these tags to call
   # +navigator.credentials.create()+.
-  def passkey_creation_options_meta_tag(creation_options, **challenge_url_options)
-    passkey_challenge_url_meta_tag(**challenge_url_options) +
+  def passkey_creation_options_meta_tag(creation_options, challenge_url: nil)
+    passkey_challenge_url_meta_tag(challenge_url: challenge_url) +
       tag.meta(name: "passkey-creation-options", content: creation_options.to_json)
   end
 
   # Renders +<meta>+ tags containing JSON-serialized request options and the challenge endpoint
   # URL for the WebAuthn authentication ceremony. The companion JavaScript reads these tags to
   # call +navigator.credentials.get()+.
-  def passkey_request_options_meta_tag(request_options, **challenge_url_options)
-    passkey_challenge_url_meta_tag(**challenge_url_options) +
+  def passkey_request_options_meta_tag(request_options, challenge_url: nil)
+    passkey_challenge_url_meta_tag(challenge_url: challenge_url) +
       tag.meta(name: "passkey-request-options", content: request_options.to_json)
   end
 
@@ -73,7 +73,15 @@ module ActionPack::Passkey::FormHelper
   end
 
   private
-    def passkey_challenge_url_meta_tag(**url_options)
-      tag.meta(name: "passkey-challenge-url", content: passkey_challenge_path(**url_options))
+    def passkey_challenge_url_meta_tag(challenge_url: nil)
+      tag.meta(name: "passkey-challenge-url", content: challenge_url || default_passkey_challenge_url)
+    end
+
+    def default_passkey_challenge_url
+      if challenge_url = Rails.configuration.action_pack.passkey.challenge_url
+        instance_exec(&challenge_url)
+      else
+        passkey_challenge_path
+      end
     end
 end

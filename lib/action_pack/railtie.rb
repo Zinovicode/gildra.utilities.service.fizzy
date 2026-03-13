@@ -29,6 +29,7 @@ class ActionPack::Railtie < Rails::Railtie
   config.action_pack.passkey = ActiveSupport::OrderedOptions.new
   config.action_pack.passkey.routes_prefix = "/rails/action_pack/passkey"
   config.action_pack.passkey.draw_routes = true
+  config.action_pack.passkey.challenge_url = nil
 
   initializer "action_pack.passkey.routes" do |app|
     passkey_config = config.action_pack.passkey
