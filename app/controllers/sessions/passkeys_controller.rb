@@ -6,7 +6,7 @@ class Sessions::PasskeysController < ApplicationController
   rate_limit to: 10, within: 3.minutes, only: :create, with: :rate_limit_exceeded
 
   def create
-    credential = ActionPack::Passkey.authenticate(passkey: passkey_authentication_params)
+    credential = ActionPack::Passkey.authenticate(passkey_authentication_params)
 
     if credential
       start_new_session_for credential.holder

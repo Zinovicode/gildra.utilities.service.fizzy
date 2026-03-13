@@ -11,10 +11,7 @@
 #   options = ActionPack::Passkey.creation_options(holder: current_user)
 #   # Pass options to the browser
 #
-#   passkey = ActionPack::Passkey.register(
-#     passkey: params[:passkey],
-#     holder: current_user
-#   )
+#   passkey = ActionPack::Passkey.register(params[:passkey], holder: current_user)
 #
 # == Authentication
 #
@@ -24,7 +21,7 @@
 #   options = ActionPack::Passkey.request_options
 #   # Pass options to the browser
 #
-#   passkey = ActionPack::Passkey.authenticate(passkey: params[:passkey])
+#   passkey = ActionPack::Passkey.authenticate(params[:passkey])
 #
 # == Holder integration
 #
@@ -57,7 +54,7 @@ class ActionPack::Passkey < ApplicationRecord
     # through to +create!+.
     #
     # Raises ActionPack::WebAuthn::InvalidResponseError if the attestation is invalid.
-    def register(passkey:, challenge: ActionPack::WebAuthn::Current.challenge, **attributes)
+    def register(passkey, challenge: ActionPack::WebAuthn::Current.challenge, **attributes)
       credential = ActionPack::WebAuthn::PublicKeyCredential.register(passkey, challenge: challenge)
 
       create!(**credential.to_h, **attributes)
@@ -78,15 +75,15 @@ class ActionPack::Passkey < ApplicationRecord
     # Looks up a passkey by credential ID and verifies the assertion response from the browser.
     # Returns the authenticated Passkey record, or +nil+ if the credential is not found or
     # verification fails.
-    def authenticate(passkey:, challenge: ActionPack::WebAuthn::Current.challenge)
-      find_by(credential_id: passkey[:id])&.authenticate(passkey: passkey, challenge: challenge)
+    def authenticate(passkey, challenge: ActionPack::WebAuthn::Current.challenge)
+      find_by(credential_id: passkey[:id])&.authenticate(passkey, challenge: challenge)
     end
   end
 
   # Verifies the assertion response against this passkey's stored credential and updates the
   # +sign_count+ and +backed_up+ attributes. Returns +self+ on success, or +nil+ if the
   # response is invalid.
-  def authenticate(passkey:, challenge: ActionPack::WebAuthn::Current.challenge)
+  def authenticate(passkey, challenge: ActionPack::WebAuthn::Current.challenge)
     credential = to_public_key_credential
     credential.authenticate(passkey, challenge: challenge)
     update!(sign_count: credential.sign_count, backed_up: credential.backed_up)

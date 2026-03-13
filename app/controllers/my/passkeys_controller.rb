@@ -9,7 +9,7 @@ class My::PasskeysController < ApplicationController
   end
 
   def create
-    passkey = Current.identity.passkeys.register(passkey: passkey_registration_params)
+    passkey = Current.identity.passkeys.register(passkey_registration_params)
 
     redirect_to edit_my_passkey_path(passkey, created: true)
   end
