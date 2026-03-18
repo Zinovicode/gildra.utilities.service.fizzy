@@ -1,5 +1,5 @@
 class Search::Record < ApplicationRecord
-  ADAPTER_MODULES = { "PostgreSQL" => :Postgresql }.freeze
+  ADAPTER_MODULES = { "PostgreSQL" => :PostgreSql }.freeze
 
   include const_get(ADAPTER_MODULES.fetch(connection.adapter_name, connection.adapter_name))
 
