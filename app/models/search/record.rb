@@ -1,5 +1,7 @@
 class Search::Record < ApplicationRecord
-  include const_get(connection.adapter_name)
+  ADAPTER_MODULES = { "PostgreSQL" => :Postgresql }.freeze
+
+  include const_get(ADAPTER_MODULES.fetch(connection.adapter_name, connection.adapter_name))
 
   belongs_to :searchable, polymorphic: true
   belongs_to :card

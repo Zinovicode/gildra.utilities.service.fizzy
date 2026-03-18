@@ -1,4 +1,4 @@
-module Search::Record::PostgreSQL
+module Search::Record::Postgresql
   extend ActiveSupport::Concern
 
   included do
