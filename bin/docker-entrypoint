@@ -2,7 +2,9 @@
 
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/thrust" ] && [ "${2}" == "./bin/rails" ] && [ "${3}" == "server" ]; then
-  ./bin/rails db:drop db:create db:migrate 2>&1 || ./bin/rails db:migrate
+  # On Render, we can't drop/create the DB. Just migrate.
+  # If tables exist from a partial migration, this will continue from where it left off.
+  ./bin/rails db:migrate || true
 fi
 
 exec "${@}"
