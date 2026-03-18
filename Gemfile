@@ -31,6 +31,8 @@ gem "lexxy", "0.8.5.beta"
 gem "image_processing", "~> 1.14"
 gem "platform_agent"
 gem "aws-sdk-s3", require: false
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
 gem "web-push"
 gem "net-http-persistent"
 gem "zip_kit"

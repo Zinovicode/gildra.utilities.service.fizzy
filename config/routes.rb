@@ -159,6 +159,11 @@ Rails.application.routes.draw do
     end
   end
 
+  # OmniAuth callbacks
+  get  "auth/google_oauth2/callback", to: "sessions/omniauth_callbacks#google_oauth2"
+  post "auth/google_oauth2/callback", to: "sessions/omniauth_callbacks#google_oauth2"
+  get  "auth/failure",                to: "sessions/omniauth_callbacks#failure"
+
   get "/signup", to: redirect("/signup/new")
 
   resource :signup, only: %i[ new create ] do

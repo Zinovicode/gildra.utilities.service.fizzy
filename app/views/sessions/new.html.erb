@@ -23,6 +23,15 @@
   <% end %>
 </div>
 
+<div class="panel panel--centered flex flex-column gap-half" style="margin-top: 1rem;">
+  <p class="txt-medium center" style="margin-bottom: 0.5rem;">Or</p>
+  <%= form_with url: "/auth/google_oauth2", method: :post, data: { turbo: false } do %>
+    <button type="submit" class="btn btn--link center txt-medium">
+      Sign in with Google
+    </button>
+  <% end %>
+</div>
+
 <% content_for :footer do %>
   <%= render "sessions/footer" %>
 <% end %>
