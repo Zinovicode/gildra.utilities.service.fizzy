@@ -1,24 +1,149 @@
 <% @page_title = "Sign in to Gildra" %>
 
-<div class="panel panel--centered flex flex-column gap align-center" style="max-width: 24rem; margin: 4rem auto;">
-  <svg height="40" viewBox="0 0 96 30" width="128" xmlns="http://www.w3.org/2000/svg" title="Gildra" style="opacity: 0.85;">
-    <path clip-rule="evenodd" d="m93.5609 8.52856c.9033.04314 1.3769.47352 1.4199 1.33398.1291 2.40966.0859 5.24976.1289 7.48726l.1289 7.3575c0 15.4902-10.2406 15.8354-16.8242 14.7168-.8606-.1722-1.2482-.7322-1.1621-1.5928l.3867-3.7002c.086-1.0327.732-1.2905 1.6787-.9463 4.3889 1.5919 9.122-.4737 9.0791-4.7334 0-1.0757-.6026-1.2052-1.2481-.3877-.9036 1.0757-2.2802 2.1943-4.3886 2.1944-3.0552 0-8.2188-1.2046-8.2188-11.962 0-2.6677-.086-5.5076-.0429-8.47652 0-.90362.5162-1.37702 1.4199-1.33399 1.2048.04302 2.3665.00006 3.5283-.04297.9036 0 1.4199.47328 1.4199 1.41992 0 3.22686-.0859 5.63626-.0859 6.45406 0 7.7023 1.7647 8.2187 3.7871 8.2618 2.1512.0427 3.5709-1.5491 3.8291-5.2061v-.9902c0-4.604.0861-6.2821-.043-8.47659-.086-.9036.3444-1.41986 1.2481-1.46289zm-43.4629-.21484c1.1186-.04303 1.5064.68823.9472 1.63476-1.8502 3.05502-5.3796 8.73462-8.3486 13.42482-.4733.7745-.1713 1.334.7754 1.334 2.1511.043 2.9261.0431 5.5937-.086.9464-.0429 1.4199.4306 1.42 1.377-.0431.8605-.0001 1.8504 0 2.7109 0 .9036-.4305 1.3769-1.334 1.377-3.9588.043-9.4238-.1721-15.6201-.043-1.1618 0-1.5487-.6881-.9463-1.6348l8.3906-13.2099c.4733-.7315.1721-1.3769-.7315-1.377-2.4096-.043-4.9915.0429-6.8418.1289-.9036.0431-1.4199-.3874-1.4199-1.291-.043-.9035 0-1.9792 0-2.92576 0-.86059.7316-1.33399 2.0225-1.33399 6.1531.04303 12.1341-.04291 16.0928-.08593zm21.1367 0c1.1186-.04294 1.5056.68817.9463 1.63476-1.8503 3.05502-5.3787 8.73462-8.3477 13.42482-.4733.7745-.1721 1.3339.7744 1.334 2.1514.043 2.9261.0431 5.5938-.086.9465-.043 1.4198.4305 1.4199 1.377-.043.8605 0 1.8504 0 2.7109 0 .9036-.4304 1.377-1.334 1.377-3.9586.043-9.4232-.1721-15.6191-.043-1.1617 0-1.5494-.6883-.9473-1.6348l8.3916-13.2099c.4733-.7315.1712-1.377-.7324-1.377-2.4096-.043-4.9916.0429-6.8418.1289-.9033.0429-1.4199-.3875-1.4199-1.291-.0431-.9035 0-1.9792 0-2.92576 0-.86051.7318-1.3339 2.0224-1.33399 6.1533.04303 12.135-.04291 16.0938-.08593zm-43.3252.25781c.9035-.04295 1.4199.38753 1.4199 1.24805.043 1.50602 0 3.65782 0 12.39262 0 5.6796-.086 5.4215 0 6.4111.1291.9036-.3444 1.4198-1.248 1.4629l-3.9161-.086c-.8604-.0431-1.3769-.4735-1.4199-1.3339-.1291-2.4097-.0859-5.2499-.1289-7.4874-.1291-5.5505-.0429-7.8742-.0859-11.23042-.043-.90357.4733-1.37695 1.4199-1.37695 1.7212.08606 2.8832.08606 3.959 0zm-21.88185-8.56250162c2.36657.04302752 4.77645.00000269 8.30465 0 1.2909 0 3.0554.04302142 4.6905 0 .7314 0 1.119.38683562 1.1191 1.16113162-.043 1.46292-.086 3.3134-.043 4.77637 0 .77451-.4305 1.11924-1.205 1.0332-1.2909-.12909-3.3564-.25866-5.5079-.34473-2.0653-.12908-2.1945.04296-4.25972.04297-.8606 0-1.42065.43055-1.59277 1.20508v.04297c-.12909.64544-.12891 1.03327-.12891 1.67871v.51567c.04303.9035.51653 1.3338 1.37696 1.3769 2.40954.043 5.46464.0002 7.70214-.1289.7315-.043 1.1621.3016 1.1621 1.0762l-.0859 4.3886c0 .7315-.4306 1.1192-1.1621 1.0762-2.2374-.043-4.7329-.0439-7.35746-.0869-.9035-.043-1.37677.4736-1.41992 1.334l-.17285 4.3467c0 2.6244.04379 4.0872.17285 5.292.12909.7315-.25872 1.1621-.99023 1.1621l-5.29297.0429c-.731221-.0001-1.075196-.3877-1.075196-1.1191-.000045-1.2478-.2149575-2.8399-.128907-5.7656.129086-5.7659.085256-13.7261-.12988242-21.81546-.04302878-.774508.34469842-1.162087 1.07617542-1.162105 1.592-.0430291 3.70034-.1719109 4.94824-.12890662zm19.90235.34374962c2.6247.00004 3.5283 1.377542 3.5283 3.055662-.0001 1.72099-.9038 3.09762-3.5283 3.09766-2.6677 0-3.5712-1.37665-3.5713-3.09766 0-1.67815.9034-3.055662 3.5713-3.055662z" fill="currentColor" fill-rule="evenodd"/>
-  </svg>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&family=Inter:wght@400;500;600&display=swap');
 
-  <h1 class="txt-x-large font-weight-black">Gildra Utilities</h1>
-  <p class="txt-medium center" style="opacity: 0.6;">Sign in with your Gildra account to continue.</p>
+  .gildra-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 40px 24px;
+  }
 
-  <%= form_with url: "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "full-width" do %>
-    <button type="submit" class="btn full-width txt-medium" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem;">
-      <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
-        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 2.58 9 3.58z" fill="#EA4335"/>
-      </svg>
-      Sign in with Google
-    </button>
-  <% end %>
+  .gildra-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .gildra-bars {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .gildra-bars .bar {
+    width: 6px;
+    border-radius: 3px;
+    background: #14B8A6;
+  }
+
+  .gildra-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 52px;
+    letter-spacing: 10px;
+    color: #14B8A6;
+    line-height: 1;
+  }
+
+  .gildra-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 5px;
+    color: #a1a1aa;
+    text-transform: lowercase;
+    margin-bottom: 48px;
+  }
+
+  .gildra-card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  .gildra-card-title {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #fafafa;
+    margin-bottom: 8px;
+  }
+
+  .gildra-card-subtitle {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    color: #71717a;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .gildra-google-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 24px;
+    background: #14B8A6;
+    color: #09090b;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .gildra-google-btn:hover {
+    background: #2dd4bf;
+  }
+
+  .gildra-footer-text {
+    margin-top: 32px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    color: #3f3f46;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 500px) {
+    .gildra-wordmark { font-size: 36px; letter-spacing: 6px; }
+    .gildra-card { padding: 28px 20px; }
+  }
+</style>
+
+<div class="gildra-login">
+  <div class="gildra-logo">
+    <div class="gildra-bars">
+      <div class="bar" style="height: 30px;"></div>
+      <div class="bar" style="height: 42px;"></div>
+      <div class="bar" style="height: 30px;"></div>
+    </div>
+    <div class="gildra-wordmark">GILDRA</div>
+  </div>
+  <div class="gildra-tagline">The beauty app</div>
+
+  <div class="gildra-card">
+    <div class="gildra-card-title">Welcome back</div>
+    <div class="gildra-card-subtitle">Sign in with your Google account to continue.</div>
+
+    <%= form_with url: "/auth/google_oauth2", method: :post, data: { turbo: false } do %>
+      <button type="submit" class="gildra-google-btn">
+        <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+          <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+          <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+          <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 2.58 9 3.58z" fill="#EA4335"/>
+        </svg>
+        Sign in with Google
+      </button>
+    <% end %>
+  </div>
+
+  <div class="gildra-footer-text">Gildra Utilities</div>
 </div>
 
 <% content_for :footer do %>
