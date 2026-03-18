@@ -7,8 +7,13 @@
       <header class="header" id="header">
         <a href="#main" class="header__skip-navigation btn" data-turbo="false">Skip to main content</a>
         <nav>
-          <%= link_to root_path, class: "header__logo center flex-inline align-center" do %>
-            <span style="font-size: 1.25rem; font-weight: 800; letter-spacing: 0.05em;">Gildra</span>
+          <%= link_to root_path, class: "header__logo center flex-inline align-center", style: "gap: 10px; text-decoration: none;" do %>
+            <span style="display: flex; gap: 3px; align-items: center;">
+              <span style="display: block; width: 4px; height: 18px; border-radius: 2px; background: #14B8A6;"></span>
+              <span style="display: block; width: 4px; height: 26px; border-radius: 2px; background: #14B8A6;"></span>
+              <span style="display: block; width: 4px; height: 18px; border-radius: 2px; background: #14B8A6;"></span>
+            </span>
+            <span style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.4rem; letter-spacing: 0.2em; color: #14B8A6; line-height: 1;">GILDRA</span>
           <% end %>
         </nav>
 
