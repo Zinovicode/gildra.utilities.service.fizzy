@@ -7,6 +7,28 @@ description: Use when a writing-plans session completes and the plan doc has bee
 
 Create a Fizzy board and cards from an implementation plan, replacing "plan to Jira tickets" workflow.
 
+## Prerequisites — Fizzy CLI Setup
+
+The `fizzy` CLI must be installed and authenticated. If `fizzy` is not found or returns auth errors, walk the user through this setup:
+
+1. **Get an API token** from the Fizzy web app at `/{account_slug}/my/access_tokens`
+2. **Login** — the token is a positional argument, not a flag:
+   ```bash
+   fizzy auth login YOUR_TOKEN --api-url fizzy.gildra.xyz
+   ```
+3. **Set account slug** — find it in the Fizzy web URL (the number after the domain, e.g. `fizzy.gildra.xyz/7/...` means the slug is `7`). Edit `~/.config/fizzy/config.yaml`:
+   ```yaml
+   token: ...
+   account: "7"
+   api_url: https://fizzy.gildra.xyz
+   ```
+4. **Verify**: `fizzy auth status` should show `authenticated: true`, and `fizzy board list` should return boards.
+
+Common gotchas:
+- `fizzy auth login --token X` does NOT work — the token must be a positional arg
+- `fizzy setup` is interactive and will cancel if not run in a TTY
+- The default `api_url` is `https://app.fizzy.do` — must be overridden for self-hosted instances
+
 ## When to Use
 
 - After `writing-plans` saves a plan doc
